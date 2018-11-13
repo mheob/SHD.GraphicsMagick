@@ -56,3 +56,12 @@ docs/_build/
 
 # PyBuilder
 target/
+
+### User-specific stuff
+# IDE
+.idea
+*.sublime-project
+*.sublime-workspace
+.cache
+.project
+.settings
