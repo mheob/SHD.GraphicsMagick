@@ -6,11 +6,15 @@ def main():
     directory = os.path.curdir + "/testdata/"
 
     # Rename file extension to lowercase (JPG only)
+    lowercaseFileExtension(directory)
+
+
+def lowercaseFileExtension(directory):
     for filename in os.listdir(directory):
-        if os.path.splitext(filename)[1] == ".JPG":
-            src = directory + "/" + filename
-            dist = directory + "/" + os.path.splitext(filename)[0] + ".jpg"
-            os.rename(src, dist)
+        if not os.path.splitext(filename)[1] == ".JPG":
+            continue
+        fullFilename = directory + "/" + filename
+        os.rename(fullFilename, fullFilename.lower())
 
 
 if __name__ == '__main__':
