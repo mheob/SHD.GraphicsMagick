@@ -65,3 +65,7 @@ target/
 .cache
 .project
 .settings
+
+# Generated test files
+150/
+512/
