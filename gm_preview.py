@@ -1,49 +1,57 @@
 import os
 
-import PythonMagick as pm
+import PythonMagick
 
 
 def main():
     # Specify some variables
-    inputDir = os.path.curdir + "/testdata/"
+    input_dir = os.path.curdir + "/testdata/_orig/"
 
     # Rename file extension to lowercase (JPG only)
-    lowercaseFileExtension(inputDir)
+    lowercase_file_extension(input_dir)
 
     # Modify the images
-    modifyImages(inputDir)
+    modify_images(input_dir)
 
 
-def lowercaseFileExtension(inputDir):
-    for filename in os.listdir(inputDir):
+def lowercase_file_extension(input_dir):
+    for filename in os.listdir(input_dir):
         if not os.path.splitext(filename)[1] == ".JPG":
             continue
 
-        fullFilename = inputDir + "/" + filename
-        os.rename(fullFilename, fullFilename.lower())
+        full_filename = input_dir + "/" + filename
+        os.rename(full_filename, full_filename.lower())
 
 
-def modifyImages(inputDir):
-    outputDirs = [inputDir + "/../150", inputDir + "/../512"]
+def modify_images(input_dir):
+    output_dirs = [input_dir + "../512/", input_dir + "../150/"]
 
-    for directory in outputDirs:
+    for directory in output_dirs:
         if not os.path.isdir(directory):
             os.mkdir(directory)
 
-    for filename in os.listdir(inputDir):
+    for filename in os.listdir(input_dir):
         if not filename.endswith(".jpg"):
             continue
 
-        for outputDir in outputDirs:
-            img = pm.Image(inputDir + filename)
-            img.strip()
-            img.trim()
-            img.quality(80)
-            img.resize("512x512>" if outputDir.endswith("512") else "150x150>")
-            img.write(outputDir + "/" + filename)
+        img = PythonMagick.Image(input_dir + filename)
+        img.strip()
+        img.trim()
+        img.quality(80)
+        img.resize("512x512>")
+        img.write(output_dirs[0] + "/" + filename)
 
-            curSize = "150" if outputDir.endswith("150") else "512"
-            print(filename + " in " + curSize + " erstellt.")
+        print(filename + " in " + "512" + " erstellt.")
+
+    for filename in os.listdir(output_dirs[0]):
+        if not filename.endswith(".jpg"):
+            continue
+
+        img = PythonMagick.Image(output_dirs[0] + filename)
+        img.resize("150x150>")
+        img.write(output_dirs[1] + "/" + filename)
+
+        print(filename + " in " + "150" + " erstellt.")
 
 
 if __name__ == '__main__':
