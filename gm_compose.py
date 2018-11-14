@@ -1,18 +1,18 @@
-import os
+from os import listdir, mkdir, path
 
 from pgmagick import Image, GravityType, CompositeOperator
 
-testDir = os.path.curdir + "/testdata/"
+test_dir = path.join(path.curdir, "testdata")
 
-layer = Image(testDir + "New_256x256.png")
+layer = Image(path.join(test_dir, "New_256x256.png"))
 
-outputDir = testDir + input("Bitte den Speicherort angeben (Ordner reicht): ")
+output_dir = path.join(test_dir, input("Bitte den Speicherort angeben (Ordner reicht): "))
 
-if not os.path.isdir(outputDir):
-    os.mkdir(outputDir)
+if not path.isdir(output_dir):
+    mkdir(output_dir)
 
-for file in os.listdir(testDir):
+for file in listdir(test_dir):
     if file.endswith(".jpg"):
-        img = Image(testDir + file)
+        img = Image(path.join(test_dir, file))
         img.composite(layer, GravityType.NorthEastGravity, CompositeOperator.OverCompositeOp)
-        img.write(outputDir + "\\" + file)
+        img.write(output_dir + "\\" + file)
