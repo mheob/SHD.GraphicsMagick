@@ -1,70 +1,99 @@
 import os
+import sys
 
 import PythonMagick
 
 
 def main():
-    # Specify some variables
-    input_dir = os.path.curdir + "/testdata/_orig/"
+    # determine if application is a script file or frozen exe
+    application_path = None
+    if getattr(sys, 'frozen', False):
+        application_path = os.path.dirname(sys.executable)
+    elif __file__:
+        application_path = os.path.dirname(__file__)
+
+    if application_path is None:
+        exit(1)
 
     # Rename file extension to lowercase (JPG only)
-    lowercase_file_extension(input_dir)
+    lowercase_file_extension(application_path)
 
     # Modify the images
-    modify_images(input_dir)
+    modify_images(application_path)
 
 
-def lowercase_file_extension(input_dir):
-    print("Ändere die Dateinamen zu Kleinbuchstaben.")
+def lowercase_file_extension(application_path):
+    print()
+    print("Überprüfe die Dateinamen nach Großbuchstaben:")
 
-    for filename in os.listdir(input_dir):
+    for filename in os.listdir(application_path):
         if not os.path.splitext(filename)[1] == ".JPG":
             continue
 
-        full_filename = input_dir + "/" + filename
+        full_filename = os.path.join(application_path, filename)
         os.rename(full_filename, full_filename.lower())
 
+        print(full_filename.lower() + " wurde korrigiert")
 
-def modify_images(input_dir):
-    output_dirs = [input_dir + "../512/", input_dir + "../150/"]
+    # TODO: Output
 
-    print("Erstelle die benötigten Ordner, falls sie noch nicht vorhanden sind.")
+
+def modify_images(application_path):
+    output_dirs = [os.path.join(application_path, "..", "512"), os.path.join(application_path, "..", "150")]
+
+    print()
+    print("--------------------------------------------------------------------")
+    print()
+    print("Erstelle die benötigten Ordner, falls sie noch nicht vorhanden sind:")
+    print()
 
     for directory in output_dirs:
         if not os.path.isdir(directory):
             os.mkdir(directory)
-            print("Ordner " + directory + " erstellt.")
+            print("Ordner " + os.path.realpath(directory) + " erstellt.")
 
-    print("Erstelle zu erst die Bilder für die Größe 512px.")
+    print()
+    print("--------------------------------------------------------------------")
+    print()
+    print("Erstelle zu erst die Bilder für die Größe 512px:")
+    print()
 
-    for filename in os.listdir(input_dir):
+    for filename in os.listdir(application_path):
         if not filename.endswith(".jpg"):
             continue
 
-        img = PythonMagick.Image(input_dir + filename)
+        img = PythonMagick.Image(os.path.join(application_path, filename))
         # noinspection PyArgumentList
         img.strip()
         # noinspection PyArgumentList
         img.trim()
         img.quality(80)
         img.resize("512x512>")
-        img.write(output_dirs[0] + "/" + filename)
+        img.write(os.path.join(output_dirs[0], filename))
 
         print(filename + " in 512 erstellt.")
 
-    print("Erstelle nun die Bilder für die Größe 150px.")
+    print()
+    print("--------------------------------------------------------------------")
+    print()
+    print("Erstelle nun die Bilder für die Größe 150px:")
+    print()
 
     for filename in os.listdir(output_dirs[0]):
         if not filename.endswith(".jpg"):
             continue
 
-        img = PythonMagick.Image(output_dirs[0] + filename)
+        img = PythonMagick.Image(os.path.join(output_dirs[0], filename))
         img.resize("150x150>")
-        img.write(output_dirs[1] + "/" + filename)
+        img.write(os.path.join(output_dirs[1], filename))
 
         print(filename + " in 150 erstellt.")
 
-    print("Alle Bilder wurden verarbeitet.")
+    print()
+    print("--------------------------------------------------------------------")
+    print()
+    print("Alle Bilder wurden verarbeitet. Vielen Dank für die Nutzung!")
+    print()
 
 
 if __name__ == '__main__':
