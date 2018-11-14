@@ -35,7 +35,9 @@ def modify_images(input_dir):
             continue
 
         img = PythonMagick.Image(input_dir + filename)
+        # noinspection PyArgumentList
         img.strip()
+        # noinspection PyArgumentList
         img.trim()
         img.quality(80)
         img.resize("512x512>")
