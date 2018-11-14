@@ -25,7 +25,7 @@ def main():
     # Modify the images
     modify_images(application_path)
 
-    # Out on shutting down the application
+    # Output on shutting down the application
     print()
     print("\t--------------------------------------------------------------------")
     print()
