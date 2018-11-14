@@ -1,9 +1,9 @@
 import sys
 
-from os import listdir, mkdir, path, rename
+from utils.gm_utility import GmUtility
+from os import listdir, mkdir, path
+from PythonMagick import Image
 from time import sleep
-
-import PythonMagick
 
 
 def main():
@@ -14,13 +14,13 @@ def main():
         application_path = path.dirname(sys.executable)
     elif __file__:
         # testing script
-        application_path = path.join(path.dirname(__file__), "testdata/_orig")
+        application_path = path.join(path.dirname(__file__), "..", "testdata/_orig")
 
     if application_path is None:
         exit(1)
 
     # Rename file extension to lowercase (JPG only)
-    lowercase_file_extension(application_path)
+    GmUtility.lowercase_file_extension(application_path)
 
     # Modify the images
     modify_images(application_path)
@@ -33,32 +33,6 @@ def main():
     print("\tVielen Dank für die Nutzung dieses Tools!")
     print()
     sleep(3)
-
-
-def lowercase_file_extension(application_path):
-    print()
-    print("\tÜberprüfe die Dateinamen nach Großbuchstaben:")
-    print()
-
-    count_files = 0
-
-    for filename in listdir(application_path):
-        if not path.splitext(filename)[1] == ".JPG":
-            continue
-
-        full_filename = path.join(application_path, filename)
-        rename(full_filename, full_filename.lower())
-
-        print("\t" + filename + "\t wurde zu \t" + filename.lower() + "\t korrigiert")
-
-        count_files += 1
-
-    print()
-
-    if count_files > 0:
-        print("\tInsgesamt wurden " + str(count_files) + " Dateien umbenannt.")
-    else:
-        print("\tEs mussten keine Dateien umbenannt werden.")
 
 
 def modify_images(application_path):
@@ -88,7 +62,7 @@ def modify_images(application_path):
         if not filename.endswith(".jpg"):
             continue
 
-        img = PythonMagick.Image(path.join(application_path, filename))
+        img = Image(path.join(application_path, filename))
         # noinspection PyArgumentList
         img.strip()
         # noinspection PyArgumentList
@@ -115,7 +89,7 @@ def modify_images(application_path):
         if not filename.endswith(".jpg"):
             continue
 
-        img = PythonMagick.Image(path.join(output_dirs[0], filename))
+        img = Image(path.join(output_dirs[0], filename))
         img.resize("150x150>")
         img.write(path.join(output_dirs[1], filename))
 
