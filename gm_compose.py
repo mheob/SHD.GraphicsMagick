@@ -1,5 +1,4 @@
 from os import listdir, mkdir, path
-
 from pgmagick import Image, GravityType, CompositeOperator
 
 test_dir = path.join(path.curdir, "testdata")
