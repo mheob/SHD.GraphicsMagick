@@ -67,5 +67,5 @@ target/
 .settings
 
 # Generated test files
-150/
-512/
+testdata/150/
+testdata/512/
