@@ -8,9 +8,11 @@ def main():
     # determine if application is a script file or frozen exe
     application_path = None
     if getattr(sys, 'frozen', False):
+        # published executable
         application_path = os.path.dirname(sys.executable)
     elif __file__:
-        application_path = os.path.dirname(__file__)
+        # testing script
+        application_path = os.path.join(os.path.dirname(__file__), "testdata/_orig")
 
     if application_path is None:
         exit(1)
