@@ -1,9 +1,11 @@
 import sys
+import keyboard
 
-from utils.gm_utility import GmUtility
 from os import listdir, mkdir, path
-from PythonMagick import Image
 from time import sleep
+
+from PythonMagick import Image
+from SHD.utils.gm_utility import GmUtility
 
 
 def main():
@@ -14,13 +16,17 @@ def main():
         application_path = path.dirname(sys.executable)
     elif __file__:
         # testing script
-        application_path = path.join(path.dirname(__file__), "..", "testdata/_orig")
-
+        application_path = path.join(path.dirname(__file__), "..", "..", "testdata/_orig")
     if application_path is None:
         exit(1)
 
-    # Rename file extension to lowercase (JPG only)
-    GmUtility.lowercase_file_extension(application_path)
+    files_in_application_path = [path.join(application_path, f) for f in listdir(application_path)]
+
+    # Rename file extension to lowercase
+    GmUtility.lowercase_filenames(files_in_application_path, ["JPG", "PNG", "TIF"])
+
+    # Convert all images to JPG
+    GmUtility.convert_filetype(files_in_application_path, "JPG", ["PNG", "TIF"])
 
     # Modify the images
     modify_images(application_path)
@@ -38,6 +44,7 @@ def main():
 def modify_images(application_path):
     output_dirs = [path.join(application_path, "..", "512"), path.join(application_path, "..", "150")]
     count_files = 0
+    override = None
 
     print()
     print("\t--------------------------------------------------------------------")
@@ -61,6 +68,24 @@ def modify_images(application_path):
     for filename in listdir(application_path):
         if not filename.endswith(".jpg"):
             continue
+
+        if path.isfile(path.join(output_dirs[0], filename)):
+            if override is None:
+                print("Sollen die bereits vorhandenen Bilder überschrieben werden? \t [ j | N ]\n")
+
+                # TODO: get keyboard niput running
+                while True:
+                    if keyboard.is_pressed('j'):
+                        override = True
+                        break
+                    elif keyboard.is_pressed('n'):
+                        override = False
+                        break
+                    else:
+                        pass
+
+            if not override:
+                continue
 
         img = Image(path.join(application_path, filename))
         # noinspection PyArgumentList
