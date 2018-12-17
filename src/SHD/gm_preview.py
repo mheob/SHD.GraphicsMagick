@@ -1,11 +1,12 @@
 import sys
-import keyboard
 
-from os import listdir, mkdir, path
+from os import listdir, path
 from time import sleep
 
 from PythonMagick import Image
-from SHD.utils.gm_utility import GmUtility
+from SHD.utils.file_utilities import FileUtilities
+from SHD.utils.gm_utilities import GmUtilities
+from SHD.utils.terminal_utilities import TerminalUtilities
 
 
 def main():
@@ -23,10 +24,10 @@ def main():
     files_in_application_path = [path.join(application_path, f) for f in listdir(application_path)]
 
     # Rename file extension to lowercase
-    GmUtility.lowercase_filenames(files_in_application_path, ["JPG", "PNG", "TIF"])
+    FileUtilities.lowercase_filenames(files_in_application_path, ["JPG", "PNG", "TIF", "WEBP"])
 
     # Convert all images to JPG
-    GmUtility.convert_filetype(files_in_application_path, "JPG", ["PNG", "TIF"])
+    GmUtilities.convert_filetype(files_in_application_path, "JPG", ["PNG", "TIF", "WEBP"])
 
     # Modify the images
     modify_images(application_path)
@@ -46,18 +47,7 @@ def modify_images(application_path):
     count_files = 0
     override = None
 
-    print()
-    print("\t--------------------------------------------------------------------")
-    print()
-    print("\tErstelle die benötigten Ordner, falls sie noch nicht vorhanden sind:")
-    print()
-
-    for directory in output_dirs:
-        if not path.isdir(directory):
-            mkdir(directory)
-            print("\tDer Ordner " + path.realpath(directory) + " wurde erstellt.")
-        else:
-            print("\tDer Ordner " + path.realpath(directory) + " war bereits vorhanden.")
+    FileUtilities.create_needed_folder(output_dirs)
 
     print()
     print("\t--------------------------------------------------------------------")
@@ -71,18 +61,8 @@ def modify_images(application_path):
 
         if path.isfile(path.join(output_dirs[0], filename)):
             if override is None:
-                print("Sollen die bereits vorhandenen Bilder überschrieben werden? \t [ j | N ]\n")
-
-                # TODO: get keyboard niput running
-                while True:
-                    if keyboard.is_pressed('j'):
-                        override = True
-                        break
-                    elif keyboard.is_pressed('n'):
-                        override = False
-                        break
-                    else:
-                        pass
+                override = TerminalUtilities.query_yes_no(
+                    "\tSollen die bereits vorhandenen Bilder überschrieben werden?", False)
 
             if not override:
                 continue
@@ -112,6 +92,9 @@ def modify_images(application_path):
 
     for filename in listdir(output_dirs[0]):
         if not filename.endswith(".jpg"):
+            continue
+
+        if (not override) and (path.isfile(path.join(output_dirs[1], filename))):
             continue
 
         img = Image(path.join(output_dirs[0], filename))
