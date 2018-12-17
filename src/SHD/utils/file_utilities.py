@@ -23,7 +23,7 @@ class FileUtilities:
 
             FileUtilities.backup_file(file)
             rename(file, file.lower())
-            FileUtilities.remove_original_file(file)
+            remove(file)
 
             filename = path.basename(file)
             print("\t" + filename + "\t wurde zu \t" + filename.lower() + "\t korrigiert")
@@ -59,14 +59,8 @@ class FileUtilities:
 
         if not path.isdir(backup_path):
             mkdir(backup_path)
+            print()
             print("\tBackupordner erstellt.")
 
         copyfile(file, path.join(backup_path, filename))
         print("\t" + filename + "\t gesichert.")
-
-    @staticmethod
-    def remove_original_file(file):
-        filename = path.basename(file)
-
-        remove(file)
-        print("\tDie originale Datei von \t" + filename + "\t wurde gelöscht.")

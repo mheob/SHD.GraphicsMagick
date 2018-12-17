@@ -1,4 +1,4 @@
-from os import path
+from os import path, remove
 
 from PythonMagick import Image
 
@@ -25,4 +25,4 @@ class GmUtilities:
             FileUtilities.backup_file(file)
             img = Image(file)
             img.write(path.splitext(file)[0] + out_type)
-            FileUtilities.remove_original_file(file)
+            remove(file)

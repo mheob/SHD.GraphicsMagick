@@ -1,7 +1,6 @@
 import sys
 
 from os import listdir, path
-from time import sleep
 
 from PythonMagick import Image
 from SHD.utils.file_utilities import FileUtilities
@@ -39,7 +38,8 @@ def main():
     print("\tDie Verarbeitung ist beendet und dieses Fenster wird in Kürze geschlossen ...")
     print("\tVielen Dank für die Nutzung dieses Tools!")
     print()
-    sleep(3)
+    input("\tBeliebige Taste zum Beenden drücken ...")
+    print()
 
 
 def modify_images(application_path):
