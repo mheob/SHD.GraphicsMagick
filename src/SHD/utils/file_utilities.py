@@ -25,7 +25,8 @@ class FileUtilities:
             rename(file, file.lower())
             FileUtilities.remove_original_file(file)
 
-            print("\t" + file + "\t wurde zu \t" + file.lower() + "\t korrigiert")
+            filename = path.basename(file)
+            print("\t" + filename + "\t wurde zu \t" + filename.lower() + "\t korrigiert")
 
             count_files += 1
 
