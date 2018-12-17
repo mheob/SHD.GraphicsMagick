@@ -38,7 +38,7 @@ def main():
     print("\tDie Verarbeitung ist beendet und dieses Fenster wird in Kürze geschlossen ...")
     print("\tVielen Dank für die Nutzung dieses Tools!")
     print()
-    input("\tBeliebige Taste zum Beenden drücken ...")
+    input("\tZum Beenden [ENTER] drücken ...")
     print()
 
 
