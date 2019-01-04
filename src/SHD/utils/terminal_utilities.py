@@ -6,9 +6,9 @@ class TerminalUtilities:
 
         if default is None:
             prompt = " [j/n] "
-        elif default == True:
+        elif default is True:
             prompt = " [J/n] "
-        elif default == False:
+        elif default is False:
             prompt = " [j/N] "
         else:
             raise ValueError("\tinvalid default answer: '%s'" % default)
