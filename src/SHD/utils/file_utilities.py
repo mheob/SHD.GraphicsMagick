@@ -62,5 +62,6 @@ class FileUtilities:
             print()
             print("\tBackupordner erstellt.")
 
+        # TODO: Check if the file already exist ([ERRNO 13] Permission denied)
         copyfile(file, path.join(backup_path, filename))
         print("\t" + filename + "\t gesichert.")
