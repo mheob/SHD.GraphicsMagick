@@ -1,6 +1,6 @@
 from os import path, remove
 
-from PythonMagick import Image
+from PythonMagick import Image, CompositeOperator
 
 from SHD.utils.file_utilities import FileUtilities
 
@@ -23,6 +23,10 @@ class GmUtilities:
                 continue
 
             FileUtilities.backup_file(file)
+
             img = Image(file)
-            img.write(path.splitext(file)[0] + out_type)
+            flattened = Image("%sx%s" % (img.columns(), img.rows()), "#fff")
+            flattened.composite(img, 0, 0, CompositeOperator.SrcOverCompositeOp)
+            flattened.magick("JPG")
+            flattened.write(path.splitext(file)[0] + out_type)
             remove(file)
