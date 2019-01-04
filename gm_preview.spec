@@ -1,5 +1,6 @@
 # -*- mode: python -*-
 
+VERSION = '0.2.2'
 block_cipher = None
 
 a = Analysis(['src\\SHD\\gm_preview.py'],
@@ -22,7 +23,7 @@ exe = EXE(pyz,
           a.zipfiles,
           a.datas,
           [],
-          name='gm_preview',
+          name='gm_preview_v' + VERSION,
           debug=False,
           bootloader_ignore_signals=False,
           strip=False,
