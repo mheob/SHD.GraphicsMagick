@@ -16,7 +16,7 @@ def main():
         application_path = path.dirname(sys.executable)
     elif __file__:
         # testing script
-        application_path = path.join(path.dirname(__file__), "..", "..", "testdata/_orig")
+        application_path = path.join(path.dirname(__file__), "..", "..", "testdata", "_orig")
     if application_path is None:
         exit(1)
 
@@ -67,14 +67,17 @@ def modify_images(application_path):
             if not override:
                 continue
 
-        img = Image(path.join(application_path, filename))
-        # noinspection PyArgumentList
-        img.strip()
-        # noinspection PyArgumentList
-        img.trim()
-        img.quality(80)
-        img.resize("512x512>")
-        img.write(path.join(output_dirs[0], filename))
+        try:
+            img = Image(path.join(application_path, filename))
+            # noinspection PyArgumentList
+            img.strip()
+            # noinspection PyArgumentList
+            img.trim()
+            img.quality(80)
+            img.resize("512x512>")
+            img.write(path.join(output_dirs[0], filename))
+        except RuntimeError as error:
+            TerminalUtilities.error_handler(str(error), "RuntimeError")
 
         print("\t" + filename + "\t erfolgreich erstellt.")
 

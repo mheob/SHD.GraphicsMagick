@@ -14,8 +14,7 @@ class TerminalUtilities:
             raise ValueError("\tinvalid default answer: '%s'" % default)
 
         while True:
-            print(question + prompt)
-            choice = input().lower()
+            choice = input(question + prompt).lower()
 
             if default is not None and choice == '':
                 return default
@@ -23,3 +22,20 @@ class TerminalUtilities:
                 return valid[choice]
             else:
                 print("\tBitte mit 'ja' oder 'nein' antworten (oder einfach 'j' bzw. 'n').\n")
+
+    @staticmethod
+    def press_to_continue(msg=None):
+        if msg is None:
+            msg = "\tBeliebige Taste zum beenden drücken ..."
+
+        print(msg)
+        input()
+
+    @staticmethod
+    def error_handler(error_msg, error_type):
+        print("\n")
+        print("\tEs hat einen \"" + error_type + "\" gegeben!")
+        print("\t" + error_msg)
+        print()
+        TerminalUtilities.press_to_continue("\tDie Anwendung wird beendet. Dafür eine beliebige Taste drücken ...")
+        exit(1)

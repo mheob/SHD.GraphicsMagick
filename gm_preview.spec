@@ -1,6 +1,6 @@
 # -*- mode: python -*-
 
-VERSION = '0.2.2'
+VERSION = '0.2.3'
 block_cipher = None
 
 a = Analysis(['src\\SHD\\gm_preview.py'],
